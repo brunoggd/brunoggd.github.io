@@ -1,7 +1,16 @@
 TO DO LIST:
+Darle a SIGUIENTE
+Colorear colores de rojos y verde
+Avanzar
 
-1) Desmenuzar el json de las preguntas y guardarlos en 3 listas diferentes, fácil, medio y difícil según dificultad.
+HTMLElements: Clase principal por la cual se extienden las otras y permite que funcionen.
 
-2) Hacer un for del json obtenido y preguntar su dificultad y guardarlo en su respectiva lista. Asociar cada lista al botón de dificultad.
+callback: función que instancia a otra función.
 
-3) Aleatorizar todo, preguntas y respuestas.
+API: Interfaz que consume datos de un servidor.
+
+Extender de HTMLElements: Ser hijo de esa clase.
+
+super(): Instancia el constructor del padre. (HTMLElements)
+
+:host(.clase o atributo): Qué reacción va a tener según lo que tenga el componente. 
