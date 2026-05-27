@@ -269,6 +269,12 @@ template_historial.innerHTML = `
         font-size: 1.2rem;
         text-align: center;
     }
+
+    .partidas {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
 </style>
 
 <div class="wrapper historial">
@@ -281,47 +287,49 @@ template_historial.innerHTML = `
             <h2 class="table-title">Dificultad</h2>
             <h2 class="table-title">Categoría</h2>
         </div>
-        <div class="wrapper contenedor-partida">
-            <div class="wrapper partida-item">1</div>
-            <div class="wrapper partida-item">Bruno</div>
-            <div class="wrapper partida-item">10</div>
-            <div class="wrapper partida-item">Fácil</div>
-            <div class="wrapper partida-item">Historia</div>
-        </div>
-        <div class="wrapper contenedor-partida">
-            <div class="wrapper partida-item">1</div>
-            <div class="wrapper partida-item">Bruno</div>
-            <div class="wrapper partida-item">10</div>
-            <div class="wrapper partida-item">Fácil</div>
-            <div class="wrapper partida-item">Historia</div>
-        </div>
-        <div class="wrapper contenedor-partida">
-            <div class="wrapper partida-item">1</div>
-            <div class="wrapper partida-item">Bruno</div>
-            <div class="wrapper partida-item">10</div>
-            <div class="wrapper partida-item">Fácil</div>
-            <div class="wrapper partida-item">Historia</div>
-        </div>
-        <div class="wrapper contenedor-partida">
-            <div class="wrapper partida-item">1</div>
-            <div class="wrapper partida-item">Bruno</div>
-            <div class="wrapper partida-item">10</div>
-            <div class="wrapper partida-item">Fácil</div>
-            <div class="wrapper partida-item">Historia</div>
-        </div>
-        <div class="wrapper contenedor-partida">
-            <div class="wrapper partida-item">1</div>
-            <div class="wrapper partida-item">Bruno</div>
-            <div class="wrapper partida-item">10</div>
-            <div class="wrapper partida-item">Fácil</div>
-            <div class="wrapper partida-item">Historia</div>
-        </div>
-        <div class="wrapper contenedor-partida">
-            <div class="wrapper partida-item">1</div>
-            <div class="wrapper partida-item">Bruno</div>
-            <div class="wrapper partida-item">10</div>
-            <div class="wrapper partida-item">Fácil</div>
-            <div class="wrapper partida-item">Historia</div>
+        <div class="wrapper partidas">
+            <div class="wrapper contenedor-partida">
+                <div class="wrapper partida-item">1</div>
+                <div class="wrapper partida-item">Bruno</div>
+                <div class="wrapper partida-item">10</div>
+                <div class="wrapper partida-item">Fácil</div>
+                <div class="wrapper partida-item">Historia</div>
+            </div>
+            <div class="wrapper contenedor-partida">
+                <div class="wrapper partida-item">1</div>
+                <div class="wrapper partida-item">Bruno</div>
+                <div class="wrapper partida-item">10</div>
+                <div class="wrapper partida-item">Fácil</div>
+                <div class="wrapper partida-item">Historia</div>
+            </div>
+            <div class="wrapper contenedor-partida">
+                <div class="wrapper partida-item">1</div>
+                <div class="wrapper partida-item">Bruno</div>
+                <div class="wrapper partida-item">10</div>
+                <div class="wrapper partida-item">Fácil</div>
+                <div class="wrapper partida-item">Historia</div>
+            </div>
+            <div class="wrapper contenedor-partida">
+                <div class="wrapper partida-item">1</div>
+                <div class="wrapper partida-item">Bruno</div>
+                <div class="wrapper partida-item">10</div>
+                <div class="wrapper partida-item">Fácil</div>
+                <div class="wrapper partida-item">Historia</div>
+            </div>
+            <div class="wrapper contenedor-partida">
+                <div class="wrapper partida-item">1</div>
+                <div class="wrapper partida-item">Bruno</div>
+                <div class="wrapper partida-item">10</div>
+                <div class="wrapper partida-item">Fácil</div>
+                <div class="wrapper partida-item">Historia</div>
+            </div>
+            <div class="wrapper contenedor-partida">
+                <div class="wrapper partida-item">1</div>
+                <div class="wrapper partida-item">Bruno</div>
+                <div class="wrapper partida-item">10</div>
+                <div class="wrapper partida-item">Fácil</div>
+                <div class="wrapper partida-item">Historia</div>
+            </div>
         </div>
     </div>
 </div>`;
