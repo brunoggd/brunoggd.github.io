@@ -1,0 +1,16 @@
+TO DO LIST:
+Darle a SIGUIENTE
+Colorear colores de rojos y verde
+Avanzar
+
+HTMLElements: Clase principal por la cual se extienden las otras y permite que funcionen.
+
+callback: función que instancia a otra función.
+
+API: Interfaz que consume datos de un servidor.
+
+Extender de HTMLElements: Ser hijo de esa clase.
+
+super(): Instancia el constructor del padre. (HTMLElements)
+
+:host(.clase o atributo): Qué reacción va a tener según lo que tenga el componente. 

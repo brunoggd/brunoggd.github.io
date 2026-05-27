@@ -1,0 +1,20 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+:root {
+    --background-colour-1: linear-gradient(#6664FA, #3F3CB5);
+}
+
+.general-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background: var(--background-colour-1);
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    overflow: hidden;
+}
