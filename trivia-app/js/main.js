@@ -218,10 +218,111 @@ class Botones extends HTMLElement {
 
 customElements.define('trivia-boton', Botones);
 
+const template_partida = document.createElement('template');
+
+template_partida.innerHTML = `
+<style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    .wrapper {
+        display: flex;
+        overflow: auto;
+        align-items: center;
+        justify-content: center;
+        text-wrap: pretty;
+        transition: all 0.5s;
+    }
+
+    .contenedor-partida {
+        width: 75vw;
+        flex-direction: row;
+        height: fit-content;
+        background: #FAFAFA;
+        border-radius: 25px;
+    }
+
+    .partida-item {
+        width: 100%;
+        padding: 15px;
+        font-size: 1rem;
+    }
+
+    .posicion {
+        text-align: center;
+        padding: 0 5px;
+        border-radius: 25%;
+    }
+
+    :host([posicion="1"]) .posicion {
+        border: 2px solid #D1A700;
+        background: #ffde5ca8;
+        color: #D1A700;
+    }
+
+    :host([posicion="2"]) .posicion {
+        border: 2px solid #969696;
+        background: #c4c4c47b;
+        color: #969696;
+    }
+
+    :host([posicion="3"]) .posicion {
+        border: 2px solid #754600;
+        background: #d17d0096;
+        color: #754600;
+    }
+</style>
+
+<div class="wrapper contenedor-partida">
+    <div class="wrapper partida-item">
+        <div class="posicion">1</div>
+    </div>
+    <div class="wrapper partida-item">Bruno</div>
+    <div class="wrapper partida-item">10</div>
+    <div class="wrapper partida-item">Fácil</div>
+    <div class="wrapper partida-item">Historia</div>
+</div>`;
+
+class Partida extends HTMLElement {
+    static get observedAttributes() {
+        return ['posicion'];
+    }
+
+    constructor() {
+        super();
+
+        this.shadow = this.attachShadow({mode: 'open'});
+        this.shadow.appendChild(template_partida.content.cloneNode(true));
+    }
+
+    connectedCallback() {
+        // console.log('Insertado en el DOM');
+    }
+
+    attributeChangedCallback(nombre, anterior, nuevo) {
+        // console.log(`${nombre} ha sido modificado: ${anterior} → ${nuevo}`);
+    }
+
+    disconnectedCallback() {
+        // console.log('Elemento Removido del DOM');
+    }
+}
+
+customElements.define('trivia-partida', Partida);
+
 const template_historial = document.createElement('template');
 
 template_historial.innerHTML = `
 <style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
     .wrapper {
         display: flex;
         overflow: auto;
@@ -234,53 +335,91 @@ template_historial.innerHTML = `
     .historial {
         width: 90vw;
         height: 75vh;
+        padding: 15px;
         background: linear-gradient(#F2F2F2,#C4C4C4);
         border-radius: 25px;
         border: 3px solid gray;
         box-shadow: 0 0 15px 0 #0009;
         flex-direction: column;
         overflow-x: hidden;
-        padding: 15px;
     }
 
     .ranking {
         width: 100%; 
         flex-direction: column; 
         border-radius: 25px; 
-        box-shadow: 0 0 25px 0 #0009;
+        border: 2px solid #929292;
+    }
+
+    .header-partida {
+        width: 100%;
+        flex-direction: row;
+        height: fit-content;
+        background: #FAFAFA;
+        border-bottom: 2px solid #929292;
     }
 
     .contenedor-partida {
         width: 100%;
         flex-direction: row;
         height: fit-content;
-        justify-content: start;
         background: #FAFAFA;
+        border-radius: 25px;
     }
 
     .partida-item {
         width: 100%;
-        font-size: 1rem;
         padding: 15px;
+        font-size: 1rem;
     }
 
     .table-title {
         width: 100%;
         font-size: 1.2rem;
         text-align: center;
+        color: #656565;
     }
 
     .partidas {
         flex-direction: column;
         width: 100%;
         gap: 10px;
+        padding: 20px;
+    }
+
+    h2 {
+        margin: 10px;
+    }
+
+    .posicion {
+        text-align: center;
+        padding: 0 5px;
+        border-radius: 25%;
+    }
+
+    .primero {
+        border: 2px solid #D1A700;
+        background: #ffde5ca8;
+        color: #D1A700;
+    }
+
+    .segundo {
+        border: 2px solid #969696;
+        background: #c4c4c47b;
+        color: #969696;
+    }
+
+    .tercero {
+        border: 2px solid #754600;
+        background: #d17d0096;
+        color: #754600;
     }
 </style>
 
 <div class="wrapper historial">
     <h2>Historial de partidas</h2>
     <div class="wrapper ranking">
-        <div class="wrapper contenedor-partida">
+        <div class="wrapper header-partida">
             <h2 class="table-title">Posición</h2>
             <h2 class="table-title">Jugador</h2>
             <h2 class="table-title">Puntuación</h2>
@@ -288,48 +427,11 @@ template_historial.innerHTML = `
             <h2 class="table-title">Categoría</h2>
         </div>
         <div class="wrapper partidas">
-            <div class="wrapper contenedor-partida">
-                <div class="wrapper partida-item">1</div>
-                <div class="wrapper partida-item">Bruno</div>
-                <div class="wrapper partida-item">10</div>
-                <div class="wrapper partida-item">Fácil</div>
-                <div class="wrapper partida-item">Historia</div>
-            </div>
-            <div class="wrapper contenedor-partida">
-                <div class="wrapper partida-item">1</div>
-                <div class="wrapper partida-item">Bruno</div>
-                <div class="wrapper partida-item">10</div>
-                <div class="wrapper partida-item">Fácil</div>
-                <div class="wrapper partida-item">Historia</div>
-            </div>
-            <div class="wrapper contenedor-partida">
-                <div class="wrapper partida-item">1</div>
-                <div class="wrapper partida-item">Bruno</div>
-                <div class="wrapper partida-item">10</div>
-                <div class="wrapper partida-item">Fácil</div>
-                <div class="wrapper partida-item">Historia</div>
-            </div>
-            <div class="wrapper contenedor-partida">
-                <div class="wrapper partida-item">1</div>
-                <div class="wrapper partida-item">Bruno</div>
-                <div class="wrapper partida-item">10</div>
-                <div class="wrapper partida-item">Fácil</div>
-                <div class="wrapper partida-item">Historia</div>
-            </div>
-            <div class="wrapper contenedor-partida">
-                <div class="wrapper partida-item">1</div>
-                <div class="wrapper partida-item">Bruno</div>
-                <div class="wrapper partida-item">10</div>
-                <div class="wrapper partida-item">Fácil</div>
-                <div class="wrapper partida-item">Historia</div>
-            </div>
-            <div class="wrapper contenedor-partida">
-                <div class="wrapper partida-item">1</div>
-                <div class="wrapper partida-item">Bruno</div>
-                <div class="wrapper partida-item">10</div>
-                <div class="wrapper partida-item">Fácil</div>
-                <div class="wrapper partida-item">Historia</div>
-            </div>
+            <trivia-partida posicion="1"></trivia-partida>
+            <trivia-partida posicion="2"></trivia-partida>
+            <trivia-partida posicion="3"></trivia-partida>
+            <trivia-partida></trivia-partida>
+            <trivia-partida></trivia-partida>
         </div>
     </div>
 </div>`;
