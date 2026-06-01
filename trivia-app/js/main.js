@@ -11,6 +11,7 @@ contenedor_general.classList.add('wrapper','general-wrapper', 'small-gap');
 
 let dificultad_seleccionada;
 let categoria_seleccionada;
+let categoria_seleccionada_texto;
 
 function decodificarHTML(texto) {
     const textarea = document.createElement('textarea');
@@ -32,6 +33,7 @@ function ValoresDefaultMenu(titulo_dificultad, selector_categorias){
     titulo_dificultad.textContent = "Seleccione una dificultad";
     dificultad_seleccionada = '';
     categoria_seleccionada = '';
+    categoria_seleccionada_texto = '';
     selector_categorias.value="1";
 }
 
@@ -188,7 +190,9 @@ template_botones.innerHTML = `
 </style>
 
 <button class="button">
-    <slot name="titulo" class="button-text">Título del botón</slot>
+    <div class="button-text">
+        <slot name="titulo">Título del botón</slot>
+    </div>
 </button>`;
 
 class Botones extends HTMLElement {
@@ -243,6 +247,7 @@ template_partida.innerHTML = `
         height: fit-content;
         background: #FAFAFA;
         border-radius: 25px;
+        padding: 0 2%;
     }
 
     .partida-item {
@@ -278,12 +283,23 @@ template_partida.innerHTML = `
 
 <div class="wrapper contenedor-partida">
     <div class="wrapper partida-item">
-        <div class="posicion">1</div>
+        <span class="posicion"><slot name="posicion">0</slot></span>
     </div>
-    <div class="wrapper partida-item">Bruno</div>
-    <div class="wrapper partida-item">10</div>
-    <div class="wrapper partida-item">Fácil</div>
-    <div class="wrapper partida-item">Historia</div>
+    <div class="wrapper partida-item">
+        <slot name="jugador">Name</slot>
+    </div>
+    <div class="wrapper partida-item">
+        <slot name="puntuacion">0</slot>
+    </div>
+    <div class="wrapper partida-item">
+        <slot name="dificultad">None</slot>
+    </div>
+    <div class="wrapper partida-item">
+        <slot name="categoria">None</slot>
+    </div>
+    <div class="wrapper partida-item">
+        <slot name="fecha">0/0/0</slot>
+    </div>
 </div>`;
 
 class Partida extends HTMLElement {
@@ -296,6 +312,7 @@ class Partida extends HTMLElement {
 
         this.shadow = this.attachShadow({mode: 'open'});
         this.shadow.appendChild(template_partida.content.cloneNode(true));
+
     }
 
     connectedCallback() {
@@ -357,24 +374,11 @@ template_historial.innerHTML = `
         height: fit-content;
         background: #FAFAFA;
         border-bottom: 2px solid #929292;
-    }
-
-    .contenedor-partida {
-        width: 100%;
-        flex-direction: row;
-        height: fit-content;
-        background: #FAFAFA;
-        border-radius: 25px;
-    }
-
-    .partida-item {
-        width: 100%;
-        padding: 15px;
-        font-size: 1rem;
+        gap:20px
     }
 
     .table-title {
-        width: 100%;
+        width: 120px;
         font-size: 1.2rem;
         text-align: center;
         color: #656565;
@@ -382,37 +386,14 @@ template_historial.innerHTML = `
 
     .partidas {
         flex-direction: column;
-        width: 100%;
+        width: fit-content;
         gap: 10px;
-        padding: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
 
     h2 {
         margin: 10px;
-    }
-
-    .posicion {
-        text-align: center;
-        padding: 0 5px;
-        border-radius: 25%;
-    }
-
-    .primero {
-        border: 2px solid #D1A700;
-        background: #ffde5ca8;
-        color: #D1A700;
-    }
-
-    .segundo {
-        border: 2px solid #969696;
-        background: #c4c4c47b;
-        color: #969696;
-    }
-
-    .tercero {
-        border: 2px solid #754600;
-        background: #d17d0096;
-        color: #754600;
     }
 </style>
 
@@ -425,13 +406,10 @@ template_historial.innerHTML = `
             <h2 class="table-title">Puntuación</h2>
             <h2 class="table-title">Dificultad</h2>
             <h2 class="table-title">Categoría</h2>
+            <h2 class="table-title">Fecha</h2>
         </div>
-        <div class="wrapper partidas">
-            <trivia-partida posicion="1"></trivia-partida>
-            <trivia-partida posicion="2"></trivia-partida>
-            <trivia-partida posicion="3"></trivia-partida>
-            <trivia-partida></trivia-partida>
-            <trivia-partida></trivia-partida>
+        <div class="wrapper partidas" id="partidas">
+            Sin partidas
         </div>
     </div>
 </div>`;
@@ -445,7 +423,7 @@ class Historial extends HTMLElement {
     }
 
     connectedCallback() {
-        // console.log('Insertado en el DOM');
+        game.cargarPartidas()
     }
 
     attributeChangedCallback(nombre, anterior, nuevo) {
@@ -508,12 +486,11 @@ class Selector extends HTMLElement {
         this.shadow.appendChild(template_selector.content.cloneNode(true));
 
         this.selector_categorias = this.shadow.querySelector('#categories-group');
-
-        this.CargarCategorias();
     }
 
     connectedCallback() {
         // console.log('Insertado en el DOM');
+        this.CargarCategorias();
         this.selector_categorias.innerHTML=`<option>Cargando categorias...</option>`;
 
         this.selector_categorias.addEventListener('change', () => {
@@ -522,7 +499,11 @@ class Selector extends HTMLElement {
             }
 
             categoria_seleccionada = this.selector_categorias.value;
+            categoria_seleccionada_texto = this.selector_categorias[this.selector_categorias.value].textContent
         });
+        
+        
+        
     }
 
     attributeChangedCallback(nombre, anterior, nuevo) {
@@ -722,7 +703,6 @@ class TriviaMenuInicio extends HTMLElement {
     }
 
     connectedCallback() {
-        // console.log('Insertado en el DOM');
 
         this.botones_dificultad.forEach(boton => {
             boton.addEventListener('click', () => {
@@ -748,7 +728,8 @@ class TriviaMenuInicio extends HTMLElement {
                 this.dispatchEvent(new CustomEvent('game-loading', {
                     detail: {
                         dificultad: dificultad_seleccionada,
-                        categoria: categoria_seleccionada
+                        categoria: categoria_seleccionada,
+                        categoria_texto: categoria_seleccionada_texto
                     }
                     // detail: Es un objeto que se define para pasar información junto con el evento.
                 }));
@@ -1046,7 +1027,7 @@ class InputName extends HTMLElement {
             @media (min-width: 768px) {
                 .input-container {
                     width: 35vw;
-                    height: 25%;
+                    height: 45%;
                 }
             }
         </style>
@@ -1058,7 +1039,6 @@ class InputName extends HTMLElement {
             </div>
         </div>
         `;
-
     }
 
     guardarNombre() {
@@ -1189,7 +1169,8 @@ template_juego.innerHTML = `
         </trivia-boton>
     </div>
 </div>
-<trivia-menu-game-over></trivia-menu-game-over>`;
+<trivia-menu-game-over></trivia-menu-game-over>
+`;
 
 class TriviaJuego extends HTMLElement {
     constructor(game) {
@@ -1319,10 +1300,8 @@ class TriviaJuego extends HTMLElement {
                         const trivia_menu = document.querySelector("trivia-menu-inicio");
                         const input_name = trivia_menu.shadowRoot.querySelector("input-name");
                         const nombre_jugador = input_name.guardarNombre();
-                        console.log(`NOMBRE DEL JUG ${nombre_jugador}`)
 
-                        game.guardarDatosPartida(dificultad_seleccionada,categoria_seleccionada, nombre_jugador)
-                        game.cargarDatosPartida()
+                        game.guardarDatosPartida(dificultad_seleccionada,categoria_seleccionada,categoria_seleccionada_texto, nombre_jugador)
 
                         const boton_volver_a_jugar = this.menu_gameover.shadowRoot.querySelector('#play-again-button');
 

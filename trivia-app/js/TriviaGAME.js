@@ -9,7 +9,6 @@ class TriviaGAME {
 
     iniciar(preguntas) {
         this.preguntas = preguntas;
-
         this.preguntaActual = 0;
         this.puntaje = 0;
     }
@@ -42,7 +41,9 @@ class TriviaGAME {
     }
 
     haTerminado() {
-        if(this.preguntaActual >= this.preguntas.length) {
+        // if(this.preguntaActual >= this.preguntas.length) {
+        if(this.preguntaActual >= 1) {
+            
             return true;
         }
 
@@ -66,34 +67,55 @@ class TriviaGAME {
             "minutos":this.minutos,
             "segundos":this.segundos
         }
-        console.log("Fecha obtenida")
         return this.fecha_actual
     }
     formatearFechaActual(){
         this.fecha = this.obtenerFechaActual()
         this.fecha =  `${this.fecha.dia}/${this.fecha.mes}/${this.fecha.año} ${this.fecha.hora}:${this.fecha.minutos}:${this.fecha.segundos}`;
-        console.log("Fecha formateada")
         return this.fecha
     }
     devolverFechaActual(){
-        this.fecha= this.formatearFechaActual()
-        console.log("Fecha devuelta")
+        this.fecha = this.formatearFechaActual()
         return this.fecha
     }
-    
-    guardarDatosPartida(dificultad_seleccionada,categoria_seleccionada, nombre_jugador){
+    guardarDatosPartida(dificultad_seleccionada,categoria_seleccionada,categoria_seleccionada_texto, nombre_jugador){
         this.datos={
             "jugador":nombre_jugador,
             "dificultad":dificultad_seleccionada,
-            "categoria":categoria_seleccionada,
+            "categoria":categoria_seleccionada_texto,
             "puntaje":this.puntaje,
             "fecha":this.devolverFechaActual()
         }
+        localStorage.setItem(`tg${localStorage.length}`, JSON.stringify(this.datos))
+        
     }
-    cargarDatosPartida(){
-        console.log("DATOS DE LA PARTIDA:")
-        console.log(this.datos)
+    cargarPartidas(){
+        const historial = document.querySelector("trivia-historial");
+        const partidas = historial.shadowRoot.getElementById("partidas");
+
+        let partida = "";
+
+        for(let indice = 0; indice < localStorage.length; indice++) {
+            const clave = localStorage.key(indice);
+            if (clave.includes("tg")) {
+                const datos = JSON.parse(localStorage.getItem(clave)); //getItem trae un JSON en formato string, JSON.parse convierte el string a formato JSON
+                partida += `
+                    <trivia-partida posicion="${indice + 1}">
+                        <span slot="posicion">${indice + 1}</span>
+                        <span slot="jugador">${datos.jugador}</span>
+                        <span slot="puntuacion">${datos.puntaje}</span>
+                        <span slot="dificultad">${datos.dificultad}</span>
+                        <span slot="categoria">${datos.categoria}</span>
+                        <span slot="fecha">${datos.fecha}</span>
+                    </trivia-partida>
+                `;
+                partidas.innerHTML = partida;
+            }
+        }
+            
+        
     }
+    
 }
 
 export default TriviaGAME;
